@@ -252,33 +252,33 @@ export default function App() {
             </div>
           </div>
 
-          <div className="flex-1 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 px-4">
-            <div className="flex items-center gap-2">
-              <Zap size={16} className="text-yellow-400 shrink-0" />
+          <div className="flex-1 flex flex-wrap items-center justify-center gap-x-10 gap-y-4 px-6">
+            <div className="flex items-center gap-3 bg-white/5 px-4 py-2 rounded-2xl border border-white/5">
+              <Zap size={20} className="text-yellow-400 shrink-0" />
               <input 
                 type="range" 
                 min="1" 
                 max="20" 
                 value={settings.speed} 
                 onChange={(e) => setSettings({ ...settings, speed: parseInt(e.target.value) })}
-                className="w-20 md:w-24 accent-yellow-400 h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer"
+                className="w-28 md:w-32 accent-yellow-400 h-2 bg-white/10 rounded-lg appearance-none cursor-pointer"
               />
-              <span className="text-white font-mono text-xs w-4">{settings.speed}</span>
+              <span className="text-white font-mono text-sm w-4">{settings.speed}</span>
             </div>
-            <div className="flex items-center gap-2">
-              <Type size={16} className="text-blue-400 shrink-0" />
+            <div className="flex items-center gap-3 bg-white/5 px-4 py-2 rounded-2xl border border-white/5">
+              <Type size={20} className="text-blue-400 shrink-0" />
               <input 
                 type="range" 
                 min="24" 
                 max="120" 
                 value={settings.fontSize} 
                 onChange={(e) => setSettings({ ...settings, fontSize: parseInt(e.target.value) })}
-                className="w-20 md:w-24 accent-blue-400 h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer"
+                className="w-28 md:w-32 accent-blue-400 h-2 bg-white/10 rounded-lg appearance-none cursor-pointer"
               />
-              <span className="text-white font-mono text-xs w-8">{settings.fontSize}px</span>
+              <span className="text-white font-mono text-sm w-10">{settings.fontSize}px</span>
             </div>
-            <div className="flex items-center gap-2">
-              <ChevronUp size={16} className="text-green-400 shrink-0" />
+            <div className="flex items-center gap-3 bg-white/5 px-4 py-2 rounded-2xl border border-white/5">
+              <ChevronUp size={20} className="text-green-400 shrink-0" />
               <input 
                 type="range" 
                 min="1" 
@@ -286,21 +286,21 @@ export default function App() {
                 step="0.1"
                 value={settings.lineHeight} 
                 onChange={(e) => setSettings({ ...settings, lineHeight: parseFloat(e.target.value) })}
-                className="w-20 md:w-24 accent-green-400 h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer"
+                className="w-28 md:w-32 accent-green-400 h-2 bg-white/10 rounded-lg appearance-none cursor-pointer"
               />
-              <span className="text-white font-mono text-xs w-6">{settings.lineHeight}</span>
+              <span className="text-white font-mono text-sm w-8">{settings.lineHeight}</span>
             </div>
-            <div className="flex items-center gap-2">
-              <Maximize2 size={16} className="text-purple-400 shrink-0" />
+            <div className="flex items-center gap-3 bg-white/5 px-4 py-2 rounded-2xl border border-white/5">
+              <Maximize2 size={20} className="text-purple-400 shrink-0" />
               <input 
                 type="range" 
                 min="30" 
                 max="100" 
                 value={settings.maxWidth} 
                 onChange={(e) => setSettings({ ...settings, maxWidth: parseInt(e.target.value) })}
-                className="w-20 md:w-24 accent-purple-400 h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer"
+                className="w-28 md:w-32 accent-purple-400 h-2 bg-white/10 rounded-lg appearance-none cursor-pointer"
               />
-              <span className="text-white font-mono text-xs w-8">{settings.maxWidth}%</span>
+              <span className="text-white font-mono text-sm w-10">{settings.maxWidth}%</span>
             </div>
           </div>
 
