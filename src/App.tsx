@@ -53,7 +53,7 @@ const FONT_FAMILIES = {
 
 const DEFAULT_SETTINGS: PrompterSettings = {
   fontSize: 64,
-  speed: 5, // 1-10 scale
+  speed: 1, // 1-10 scale
   fontFamily: 'sans',
   textColor: '#ffffff',
   backgroundColor: '#000000',
@@ -131,6 +131,12 @@ export default function App() {
     setScrollPosition(0); 
     setIsPlaying(false);
     setShowControls(true);
+  };
+
+  const resetSettings = () => {
+    if (confirm('確定要恢復所有顯示設定為預設值嗎？')) {
+      setSettings(DEFAULT_SETTINGS);
+    }
   };
 
   const stopPrompter = () => {
@@ -238,6 +244,14 @@ export default function App() {
             >
               <ChevronLeft size={20} />
               <span className="font-semibold">退出</span>
+            </button>
+            <button 
+              onClick={resetSettings}
+              className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-white/50 border border-white/10 transition-colors text-[10px] uppercase tracking-wider"
+              title="恢復預設設定"
+            >
+              <RotateCcw size={14} />
+              <span>Reset Settings</span>
             </button>
             <div className="text-white/70 text-xs font-mono bg-white/5 px-2 py-1 rounded-lg border border-white/10 flex flex-col gap-0.5">
               <div className="flex items-center gap-1.5">
@@ -585,6 +599,22 @@ export default function App() {
                 </div>
 
                 {/* Mirror Mode & Fullscreen removed from here as they are in prompter view */}
+                <div className="pt-4 space-y-3">
+                  <button 
+                    onClick={resetSettings}
+                    className="w-full py-3 bg-gray-800 text-gray-400 rounded-2xl text-sm font-medium hover:bg-gray-700 hover:text-white transition-all flex items-center justify-center gap-2 border border-gray-700"
+                  >
+                    <RotateCcw size={16} />
+                    恢復預設設定
+                  </button>
+                  <button 
+                    onClick={startPrompter}
+                    className="w-full py-4 bg-white text-black rounded-2xl font-bold hover:bg-gray-200 transition-all flex items-center justify-center gap-2"
+                  >
+                    <Maximize2 size={18} />
+                    全螢幕啟動
+                  </button>
+                </div>
               </div>
             </div>
 
