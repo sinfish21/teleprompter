@@ -76,6 +76,7 @@ export default function App() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [scrollPosition, setScrollPosition] = useState(0);
   const [showControls, setShowControls] = useState(true);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   
   const scrollRef = useRef<HTMLDivElement>(null);
   const requestRef = useRef<number | null>(null);
@@ -94,6 +95,25 @@ export default function App() {
 
   const updateSegment = (id: string, field: 'title' | 'content', value: string) => {
     setSegments(segments.map(s => s.id === id ? { ...s, [field]: value } : s));
+  };
+
+  const handleInputFocus = (id: string, field: 'title' | 'content', value: string) => {
+    const defaultTitles = ['開場白', '操作說明', '結語'];
+    const defaultContents = [
+      '歡迎使用專業網頁提詞機。',
+      '您可以點擊下方的「新增段落」來增加內容。',
+      '調整字體大小與速度，讓您的演講更加流暢。'
+    ];
+
+    if (field === 'title') {
+      if (defaultTitles.includes(value) || value.startsWith('段落 ')) {
+        updateSegment(id, 'title', '');
+      }
+    } else {
+      if (defaultContents.includes(value)) {
+        updateSegment(id, 'content', '');
+      }
+    }
   };
 
   const moveSegment = (index: number, direction: 'up' | 'down') => {
@@ -117,6 +137,21 @@ export default function App() {
     setIsPrompterActive(false);
     setIsPlaying(false);
     if (requestRef.current) cancelAnimationFrame(requestRef.current);
+    if (document.fullscreenElement) {
+      document.exitFullscreen().catch(() => {});
+    }
+  };
+
+  const toggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch((err) => {
+        console.error(`Error enabling full-screen: ${err.message}`);
+      });
+      setIsFullscreen(true);
+    } else {
+      document.exitFullscreen().catch(() => {});
+      setIsFullscreen(false);
+    }
   };
 
   // --- Animation Loop ---
@@ -163,9 +198,11 @@ export default function App() {
       } else if (e.code === 'ArrowLeft') {
         setCurrentSegmentIndex(prev => Math.max(0, prev - 1));
         setScrollPosition(0);
+        setIsPlaying(false);
       } else if (e.code === 'ArrowRight') {
         setCurrentSegmentIndex(prev => Math.min(segments.length - 1, prev + 1));
         setScrollPosition(0);
+        setIsPlaying(false);
       } else if (e.code === 'ArrowUp') {
         setScrollPosition(prev => Math.max(0, prev - 50));
       } else if (e.code === 'ArrowDown') {
@@ -266,6 +303,13 @@ export default function App() {
           </div>
 
           <div className="flex items-center gap-2">
+            <button 
+              onClick={toggleFullscreen}
+              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/10 border border-white/10 text-white hover:bg-white/20 transition-all"
+              title={isFullscreen ? "退出全螢幕" : "全螢幕"}
+            >
+              {isFullscreen ? <Minimize2 size={20} /> : <Maximize2 size={20} />}
+            </button>
              <button 
               onClick={() => setSettings(s => ({ ...s, isMirrored: !s.isMirrored }))}
               className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all border ${settings.isMirrored ? 'bg-blue-500 border-blue-400 text-white shadow-lg shadow-blue-500/20' : 'bg-white/10 border-white/10 text-white hover:bg-white/20'}`}
@@ -305,6 +349,7 @@ export default function App() {
             onClick={() => {
               setCurrentSegmentIndex(prev => Math.max(0, prev - 1));
               setScrollPosition(0);
+              setIsPlaying(false);
             }}
             disabled={currentSegmentIndex === 0}
             className="p-4 rounded-full bg-white/10 hover:bg-white/20 text-white disabled:opacity-20 transition-all active:scale-90"
@@ -337,6 +382,7 @@ export default function App() {
             onClick={() => {
               setCurrentSegmentIndex(prev => Math.min(segments.length - 1, prev + 1));
               setScrollPosition(0);
+              setIsPlaying(false);
             }}
             disabled={currentSegmentIndex === segments.length - 1}
             className="p-4 rounded-full bg-white/10 hover:bg-white/20 text-white disabled:opacity-20 transition-all active:scale-90"
@@ -433,6 +479,7 @@ export default function App() {
                         type="text"
                         value={segment.title}
                         onChange={(e) => updateSegment(segment.id, 'title', e.target.value)}
+                        onFocus={(e) => handleInputFocus(segment.id, 'title', e.target.value)}
                         placeholder="段落小標題..."
                         className="bg-transparent border-none focus:ring-0 text-blue-400 font-medium text-sm p-0 placeholder:text-gray-600 w-full"
                       />
@@ -463,6 +510,7 @@ export default function App() {
                   <textarea 
                     value={segment.content}
                     onChange={(e) => updateSegment(segment.id, 'content', e.target.value)}
+                    onFocus={(e) => handleInputFocus(segment.id, 'content', e.target.value)}
                     placeholder="在此輸入提詞內容..."
                     className="w-full bg-transparent border-none focus:ring-0 text-gray-200 placeholder:text-gray-600 resize-none min-h-[120px] text-lg leading-relaxed"
                   />
