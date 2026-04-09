@@ -227,10 +227,10 @@ export default function App() {
       >
         {/* Top Control Bar */}
         <div 
-          className={`absolute top-0 left-0 right-0 p-4 flex items-center justify-between bg-black/60 backdrop-blur-md z-20 transition-all duration-500 ${showControls ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}`}
+          className={`absolute top-0 left-0 right-0 p-4 flex items-start justify-between bg-black/60 backdrop-blur-md z-20 transition-all duration-500 ${showControls ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}`}
           onClick={(e) => e.stopPropagation()}
         >
-          <div className="flex items-center gap-4">
+          <div className="flex flex-col gap-2 items-start">
             <button 
               onClick={stopPrompter}
               className="flex items-center gap-2 px-4 py-2 rounded-xl bg-red-500/20 hover:bg-red-500/30 text-red-400 border border-red-500/30 transition-colors"
@@ -239,44 +239,46 @@ export default function App() {
               <ChevronLeft size={20} />
               <span className="font-semibold">退出</span>
             </button>
-            <div className="text-white/70 text-sm font-mono bg-white/5 px-3 py-1.5 rounded-lg border border-white/10 flex items-center gap-2">
-              <span>段落 {currentSegmentIndex + 1} / {segments.length}</span>
+            <div className="text-white/70 text-xs font-mono bg-white/5 px-2 py-1 rounded-lg border border-white/10 flex flex-col gap-0.5">
+              <div className="flex items-center gap-1.5">
+                <span className="opacity-50 text-[10px] uppercase tracking-wider">Progress</span>
+                <span>{currentSegmentIndex + 1} / {segments.length}</span>
+              </div>
               {segments[currentSegmentIndex]?.title && (
-                <>
-                  <span className="w-px h-3 bg-white/20 mx-1" />
-                  <span className="text-blue-400 font-sans font-medium">{segments[currentSegmentIndex].title}</span>
-                </>
+                <div className="text-blue-400 font-sans font-medium truncate max-w-[120px]">
+                  {segments[currentSegmentIndex].title}
+                </div>
               )}
             </div>
           </div>
 
-          <div className="hidden md:flex items-center gap-8">
-            <div className="flex items-center gap-3">
-              <Zap size={18} className="text-yellow-400" />
+          <div className="flex-1 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 px-4">
+            <div className="flex items-center gap-2">
+              <Zap size={16} className="text-yellow-400 shrink-0" />
               <input 
                 type="range" 
                 min="1" 
                 max="20" 
                 value={settings.speed} 
                 onChange={(e) => setSettings({ ...settings, speed: parseInt(e.target.value) })}
-                className="w-24 accent-yellow-400 h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer"
+                className="w-20 md:w-24 accent-yellow-400 h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer"
               />
-              <span className="text-white font-mono text-sm w-4">{settings.speed}</span>
+              <span className="text-white font-mono text-xs w-4">{settings.speed}</span>
             </div>
-            <div className="flex items-center gap-3">
-              <Type size={18} className="text-blue-400" />
+            <div className="flex items-center gap-2">
+              <Type size={16} className="text-blue-400 shrink-0" />
               <input 
                 type="range" 
                 min="24" 
                 max="120" 
                 value={settings.fontSize} 
                 onChange={(e) => setSettings({ ...settings, fontSize: parseInt(e.target.value) })}
-                className="w-24 accent-blue-400 h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer"
+                className="w-20 md:w-24 accent-blue-400 h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer"
               />
-              <span className="text-white font-mono text-sm w-10">{settings.fontSize}px</span>
+              <span className="text-white font-mono text-xs w-8">{settings.fontSize}px</span>
             </div>
-            <div className="flex items-center gap-3">
-              <ChevronUp size={18} className="text-green-400" />
+            <div className="flex items-center gap-2">
+              <ChevronUp size={16} className="text-green-400 shrink-0" />
               <input 
                 type="range" 
                 min="1" 
@@ -284,21 +286,21 @@ export default function App() {
                 step="0.1"
                 value={settings.lineHeight} 
                 onChange={(e) => setSettings({ ...settings, lineHeight: parseFloat(e.target.value) })}
-                className="w-24 accent-green-400 h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer"
+                className="w-20 md:w-24 accent-green-400 h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer"
               />
-              <span className="text-white font-mono text-sm w-8">{settings.lineHeight}</span>
+              <span className="text-white font-mono text-xs w-6">{settings.lineHeight}</span>
             </div>
-            <div className="flex items-center gap-3">
-              <Maximize2 size={18} className="text-purple-400" />
+            <div className="flex items-center gap-2">
+              <Maximize2 size={16} className="text-purple-400 shrink-0" />
               <input 
                 type="range" 
                 min="30" 
                 max="100" 
                 value={settings.maxWidth} 
                 onChange={(e) => setSettings({ ...settings, maxWidth: parseInt(e.target.value) })}
-                className="w-24 accent-purple-400 h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer"
+                className="w-20 md:w-24 accent-purple-400 h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer"
               />
-              <span className="text-white font-mono text-sm w-10">{settings.maxWidth}%</span>
+              <span className="text-white font-mono text-xs w-8">{settings.maxWidth}%</span>
             </div>
           </div>
 
@@ -582,34 +584,7 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* Mirror Mode */}
-                <div className="grid grid-cols-1 gap-3">
-                  <div className="flex items-center justify-between p-4 bg-gray-800/50 rounded-2xl border border-gray-800">
-                    <div className="flex items-center gap-3">
-                      <FlipHorizontal size={20} className="text-gray-400" />
-                      <div>
-                        <p className="text-sm font-medium text-white">鏡像模式</p>
-                        <p className="text-xs text-gray-500">適用於實體提詞架</p>
-                      </div>
-                    </div>
-                    <button 
-                      onClick={() => setSettings(s => ({ ...s, isMirrored: !s.isMirrored }))}
-                      className={`w-12 h-6 rounded-full transition-all relative ${settings.isMirrored ? 'bg-blue-600' : 'bg-gray-700'}`}
-                    >
-                      <div className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-all ${settings.isMirrored ? 'left-7' : 'left-1'}`} />
-                    </button>
-                  </div>
-                </div>
-
-                <div className="pt-4">
-                  <button 
-                    onClick={startPrompter}
-                    className="w-full py-4 bg-white text-black rounded-2xl font-bold hover:bg-gray-200 transition-all flex items-center justify-center gap-2"
-                  >
-                    <Maximize2 size={18} />
-                    全螢幕啟動
-                  </button>
-                </div>
+                {/* Mirror Mode & Fullscreen removed from here as they are in prompter view */}
               </div>
             </div>
 
@@ -629,6 +604,15 @@ export default function App() {
           </div>
         </div>
       </div>
+      
+      {/* Footer */}
+      <footer className="max-w-5xl mx-auto px-6 py-12 border-t border-gray-800 flex flex-col items-center gap-4">
+        <div className="flex items-center gap-2 text-gray-500 text-sm">
+          <span>Created by</span>
+          <span className="text-blue-400 font-bold tracking-wider">sinfish</span>
+        </div>
+        <p className="text-gray-600 text-xs">© 2026 Professional Web Teleprompter</p>
+      </footer>
     </div>
   );
 }
